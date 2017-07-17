@@ -42,6 +42,8 @@ ErrCode CGameRoom::DelUser(char* userName)
 				iTerPos = users.erase(iTerPos);
 				return SYS_DEL_MS;
 			}
+			delete iTerPos->username;
+			iTerPos->username = NULL;
 			iTerPos = users.erase(iTerPos);
 			return SYS_DEL_PL;
 		}

@@ -16,6 +16,9 @@ public:
 	void Release();
 public:
 	USER CreateNewUser();
+	void DeleteUser();
+	void BanUsers();
+	void ClearRoom();
 	void PrintRoom();
 	void PrintInfo(USER& tUserInfo);
 	void KeyCheck();

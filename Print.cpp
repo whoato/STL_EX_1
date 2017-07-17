@@ -54,3 +54,13 @@ void CPrint::PrintText(int _ix, int _iy, int _index, int _color)
 	char* pstr = itoa(_index, str, 10);
 	WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), pstr, strlen(pstr), &dw, NULL);
 }
+
+void CPrint::gotoxy(int _ix, int _iy)
+{
+	COORD CursorPosition;
+
+	CursorPosition.X = _ix;
+	CursorPosition.Y = _iy;
+
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), CursorPosition);
+}
