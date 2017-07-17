@@ -1,0 +1,16 @@
+#pragma once
+const int MAX_SIZE = 6;
+
+const DWORD		KEY_A = 0x00000001;
+const DWORD		KEY_S = 0x00000002;
+const DWORD		KEY_D = 0x00000004;
+const DWORD		KEY_F = 0x00000008;
+const DWORD		KEY_G = 0x00000010;
+const DWORD		KEY_Y = 0x00000020;
+const DWORD		KEY_N = 0x00000040;
+const DWORD		KEY_1 = 0x00000080;
+const DWORD		KEY_2 = 0x00000100;
+const DWORD		KEY_3 = 0x00000200;
+const DWORD		KEY_4 = 0x00000400;
+const DWORD		KEY_5 = 0x00000800;
+const DWORD		KEY_6 = 0x00001000;
