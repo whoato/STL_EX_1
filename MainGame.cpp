@@ -60,14 +60,75 @@ USER CMainGame::CreateNewUser()
 	USER User(10, 100);
 
 	char buffer[100];
-	cout << "추가할 이름을 입력하세요" << endl;
-	cin.clear();
-	cin >> buffer;
+	CPrint::GetInst()->PrintText(0, 20, "추가할 이름을 입력하세요");
+	CPrint::GetInst()->gotoxy(0, 21);
+	cin.clear();								// <<<<--------------------------------------------------------------cin.clear();
+	cin.ignore(cin.rdbuf()->in_avail(), '\n');
+	cin.rdbuf()->in_avail();
+	cin.getline(buffer,100);
 
 	User.username = new char[strlen(buffer)];
 	strcpy(User.username, buffer);
 
 	return User;
+}
+
+void CMainGame::DeleteUser()
+{
+	char bufDel[100];
+	//cout << "삭제할 이름을 입력하세요" << endl;
+	CPrint::GetInst()->PrintText(0, 20, "삭제할 이름을 입력하세요");
+	CPrint::GetInst()->gotoxy(0, 21);
+	cin.clear();								// <<<<--------------------------------------------------------------cin.clear();
+	cin.ignore(cin.rdbuf()->in_avail(), '\n');
+	cin.rdbuf()->in_avail();
+	cin >> bufDel;
+
+	ErrNum = GameRoom.DelUser(bufDel);
+}
+
+void CMainGame::BanUsers()
+{
+	int num = 0;
+	CPrint::GetInst()->PrintText(0, 20, "1~6까지의 숫자를 입력하세요.");
+	CPrint::GetInst()->gotoxy(0, 21);
+	cin.clear();								// <<<<--------------------------------------------------------------cin.clear();
+	cin.ignore(cin.rdbuf()->in_avail(), '\n');
+	cin.rdbuf()->in_avail();
+	cin >> num;
+
+	if (cin.fail())
+	{
+		ErrNum = ERR_WR_NUM;
+	}
+	else
+	{
+		num--;
+		ErrNum = GameRoom.BanUser(num);
+	}
+}
+
+void CMainGame::ClearRoom()
+{
+	char bufClr[100];
+	CPrint::GetInst()->PrintText(0, 20, "정말로 삭제할까요? Y / N");
+	CPrint::GetInst()->gotoxy(0, 21);
+	cin.clear();
+	cin.ignore(cin.rdbuf()->in_avail(), '\n');
+	cin.rdbuf()->in_avail();
+	cin >> bufClr;
+	if (!strcmp(bufClr, "y") || !strcmp(bufClr, "Y"))
+	{
+		GameRoom.Clear();
+	}
+	else if (!strcmp(bufClr, "n") || !strcmp(bufClr, "N"))
+	{
+		ErrNum = ERR_FINE;
+	}
+	else
+	{
+		ErrNum = ERR_WR_STR;
+	}
 }
 
 void CMainGame::PrintRoom()
@@ -124,27 +185,11 @@ void CMainGame::KeyCheck()
 	{
 		if (m_dwKey & KEY_A)
 		{
-			char bufDel[100];
-			cout << "삭제할 이름을 입력하세요" << endl;
-			cin >> bufDel;
-
-			ErrNum = GameRoom.DelUser(bufDel);
+			DeleteUser();
 		}
 		if (m_dwKey & KEY_D)
 		{
-			int num = 0;
-			cout << "1~6까지의 숫자를 입력하세요." << endl;
-			cin >> num;
-
-			if (cin.fail())
-			{
-				ErrNum = ERR_WR_NUM;
-			}
-			else
-			{
-				num--;
-				ErrNum = GameRoom.BanUser(num);
-			}
+			BanUsers();
 		}
 	}
 	
@@ -152,25 +197,10 @@ void CMainGame::KeyCheck()
 	{
 		iNowIndex = MASTER;
 		ErrNum = GameRoom.AddUser(CreateNewUser());
-		
 	}
 	if (m_dwKey & KEY_F)
 	{
-		char bufClr[100];
-		cout << "정말로 삭제할까요? Y / N" << endl;
-		cin >> bufClr;
-		if (!strcmp(bufClr, "y") || !strcmp(bufClr, "Y"))
-		{
-			GameRoom.Clear();
-		}
-		else if (!strcmp(bufClr, "n") || !strcmp(bufClr, "N"))
-		{
-			ErrNum = ERR_FINE;
-		}
-		else
-		{
-			ErrNum = ERR_WR_STR;
-		}
+		ClearRoom();
 	}
 	if (m_dwKey & KEY_G)
 	{
@@ -200,6 +230,10 @@ void CMainGame::KeyCheck()
 	{
 		iNowIndex = 5;
 	}
+
+	cin.clear();
+	cin.ignore(cin.rdbuf()->in_avail(), '\n');
+	cin.rdbuf()->in_avail();
 }
 
 void CMainGame::ErrorLine()

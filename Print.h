@@ -17,6 +17,7 @@ public:
 	void SetTextColor(int _index);
 	void PrintText(int _ix, int _iy, char* _string, int _color = Èò»ö);
 	void PrintText(int _ix, int _iy, int _index, int _color = Èò»ö);
+	void gotoxy(int _ix, int _iy);
 private:
 	CPrint();
 public:
